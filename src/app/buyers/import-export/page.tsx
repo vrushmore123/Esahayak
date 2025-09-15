@@ -6,7 +6,7 @@ export default function ImportExportPage() {
     <main>
       <h1>Import / Export Buyers</h1>
       <nav>
-        <Link href="/buyers">← Back to Buyers</Link>
+        <Link href="/">← Back </Link>
       </nav>
       <ImportExport />
     </main>
