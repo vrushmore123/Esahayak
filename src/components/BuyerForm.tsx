@@ -107,7 +107,7 @@ export default function BuyerForm({
     defaultValues: {
       status: "New",
       tags: "",
-      ownerId: "user-id-placeholder", // You'll need to replace this with actual user ID
+      ownerId: "123e4567-e89b-12d3-a456-426614174000", // Replace with actual user id if available
     },
   });
 
@@ -123,9 +123,16 @@ export default function BuyerForm({
         setIsLoading(true);
         try {
           const data = await fetchBuyerData(buyerId);
-          reset(data);
+          reset({
+            ...data,
+            ownerId: data.ownerId || "123e4567-e89b-12d3-a456-426614174000", // fallback if missing
+          });
           if (data.tags) {
-            setTags(data.tags.split(",").filter((tag: string) => tag !== ""));
+            setTags(
+              typeof data.tags === "string"
+                ? data.tags.split(",").filter((tag: string) => tag !== "")
+                : []
+            );
           }
         } catch (error) {
           console.error("Failed to load buyer data:", error);
@@ -143,10 +150,9 @@ export default function BuyerForm({
   const onSubmit = async (data: BuyerFormData) => {
     setIsSubmitting(true);
 
-    // Add tags to form data
+    // Always set tags as string and ownerId before submit
     data.tags = tags.join(",");
-
-    // Set timestamps
+    data.ownerId = data.ownerId || "123e4567-e89b-12d3-a456-426614174000";
     data.updatedAt = new Date();
 
     try {
