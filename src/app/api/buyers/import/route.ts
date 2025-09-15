@@ -30,6 +30,7 @@ const buyerSchema = z.object({
     .default("New"),
   notes: z.string().max(1000).optional(),
   tags: z.string().optional(),
+  ownerId: z.string().uuid(), // <-- add this line
 });
 
 // Utility function to validate and transform CSV rows
@@ -49,6 +50,7 @@ function validateAndTransformRow(row: any) {
     status: row.status || "New",
     notes: row.notes || undefined,
     tags: row.tags || undefined,
+    ownerId: row.ownerId || "123e4567-e89b-12d3-a456-426614174000", // <-- add this line, use a default or from row
   };
 
   return buyerSchema.parse(parsedRow);
@@ -75,7 +77,7 @@ export async function POST(request: Request) {
     for (const [index, row] of rows.entries()) {
       try {
         const validatedRow = validateAndTransformRow(row);
-        validBuyers.push({ ...validatedRow, ownerId: "clsn698kv0000008i9vj1v28k" });
+        validBuyers.push(validatedRow);
       } catch (error) {
         if (error instanceof ZodError) {
           errors.push({ row: index + 1, message: error.issues });
