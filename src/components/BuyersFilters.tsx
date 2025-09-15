@@ -1,5 +1,4 @@
-
-
+"use client";
 
 import React, { useState } from "react";
 import { FaSearch, FaFilter, FaTimesCircle } from "react-icons/fa";
@@ -22,7 +21,13 @@ export default function BuyersFilters() {
     "Panchkula",
     "Other",
   ];
-  const propertyTypeOptions = ["Apartment", "Villa", "Plot", "Office", "Retail"];
+  const propertyTypeOptions = [
+    "Apartment",
+    "Villa",
+    "Plot",
+    "Office",
+    "Retail",
+  ];
   const statusOptions = [
     "New",
     "Qualified",

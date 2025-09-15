@@ -12,7 +12,17 @@ export const BuyerSchema = z.object({
   budgetMax: z.number().int().optional(),
   timeline: z.enum(["0-3m", "3-6m", ">6m", "Exploring"]),
   source: z.enum(["Website", "Referral", "Walk-in", "Call", "Other"]),
-  status: z.enum(["New", "Qualified", "Contacted", "Visited", "Negotiation", "Converted", "Dropped"]).default("New"),
+  status: z
+    .enum([
+      "New",
+      "Qualified",
+      "Contacted",
+      "Visited",
+      "Negotiation",
+      "Converted",
+      "Dropped",
+    ])
+    .default("New"),
   notes: z.string().max(1000).optional(),
   tags: z.array(z.string()).optional(),
   ownerId: z.string().uuid(),

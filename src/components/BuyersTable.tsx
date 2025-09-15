@@ -1,6 +1,15 @@
+"use client";
+
 import React, { useState } from "react";
 import Link from "next/link";
-import { FaEdit, FaEye, FaSort, FaSortUp, FaSortDown, FaEllipsisV } from "react-icons/fa";
+import {
+  FaEdit,
+  FaEye,
+  FaSort,
+  FaSortUp,
+  FaSortDown,
+  FaEllipsisV,
+} from "react-icons/fa";
 
 // Mock data for demonstration
 const mockBuyers = [
@@ -167,7 +176,9 @@ export default function BuyersTable() {
             {mockBuyers.map((buyer) => (
               <tr key={buyer.id} className="hover:bg-gray-50">
                 <td className="px-6 py-4 whitespace-nowrap">
-                  <div className="font-medium text-gray-900">{buyer.fullName}</div>
+                  <div className="font-medium text-gray-900">
+                    {buyer.fullName}
+                  </div>
                 </td>
                 <td className="px-6 py-4 whitespace-nowrap text-sm text-gray-500">
                   {buyer.phone}
@@ -179,14 +190,17 @@ export default function BuyersTable() {
                   {buyer.propertyType}
                 </td>
                 <td className="px-6 py-4 whitespace-nowrap text-sm text-gray-500">
-                  {formatCurrency(buyer.budgetMin)} – {formatCurrency(buyer.budgetMax)}
+                  {formatCurrency(buyer.budgetMin)} –{" "}
+                  {formatCurrency(buyer.budgetMax)}
                 </td>
                 <td className="px-6 py-4 whitespace-nowrap text-sm text-gray-500">
                   {buyer.timeline}
                 </td>
                 <td className="px-6 py-4 whitespace-nowrap">
                   <span
-                    className={`px-2 inline-flex text-xs leading-5 font-semibold rounded-full ${statusColors[buyer.status as keyof typeof statusColors]}`}
+                    className={`px-2 inline-flex text-xs leading-5 font-semibold rounded-full ${
+                      statusColors[buyer.status as keyof typeof statusColors]
+                    }`}
                   >
                     {buyer.status}
                   </span>
@@ -256,8 +270,7 @@ export default function BuyersTable() {
         <div className="hidden sm:flex-1 sm:flex sm:items-center sm:justify-between">
           <div>
             <p className="text-sm text-gray-700">
-              Showing{" "}
-              <span className="font-medium">1</span> to{" "}
+              Showing <span className="font-medium">1</span> to{" "}
               <span className="font-medium">10</span> of{" "}
               <span className="font-medium">20</span> results
             </p>
