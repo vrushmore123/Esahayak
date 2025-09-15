@@ -4,11 +4,13 @@ import BuyerHistory from "@/components/BuyerHistory";
 import Layout from "@/components/Layout";
 import AnimatedWrapper from "@/components/AnimatedWrapper";
 
+
+type PageProps = {
+  params: { id: string };
+};
 export default function BuyerDetailPage({
   params,
-}: {
-  params: { id: string };
-}) {
+}: PageProps) {
   return (
     <Layout>
       <AnimatedWrapper>
