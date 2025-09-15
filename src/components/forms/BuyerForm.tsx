@@ -1,0 +1,1 @@
+export function BuyerForm() { return <form>Buyer Form</form>; }

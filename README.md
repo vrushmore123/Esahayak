@@ -1,3 +1,5 @@
+# Buyer Leads App
+
 This is a [Next.js](https://nextjs.org) project bootstrapped with [`create-next-app`](https://nextjs.org/docs/app/api-reference/cli/create-next-app).
 
 ## Getting Started
@@ -19,6 +21,30 @@ Open [http://localhost:3000](http://localhost:3000) with your browser to see the
 You can start editing the page by modifying `app/page.tsx`. The page auto-updates as you edit the file.
 
 This project uses [`next/font`](https://nextjs.org/docs/app/building-your-application/optimizing/fonts) to automatically optimize and load [Geist](https://vercel.com/font), a new font family for Vercel.
+
+## Setup
+
+- Install dependencies: `npm install`
+- Setup DB: `npx drizzle-kit generate` or `npx prisma migrate dev`
+- Run locally: `npm run dev`
+
+## Design Notes
+
+- Validation: Zod on both client and server
+- SSR: Buyers list page
+- Ownership: Enforced in API routes
+
+## What’s Done
+
+- [x] CRUD for buyers
+- [x] Filters/search/sort
+- [x] CSV import/export
+- [x] Auth (demo)
+- [x] History tracking
+
+## Skipped
+
+- Admin role (optional)
 
 ## Learn More
 

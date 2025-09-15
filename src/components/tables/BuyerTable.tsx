@@ -1,0 +1,1 @@
+export function BuyerTable() { return <table><tbody></tbody></table>; }
