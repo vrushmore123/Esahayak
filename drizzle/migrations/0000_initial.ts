@@ -1,6 +1,7 @@
-import { sql } from 'drizzle-orm';
+import { sql } from "drizzle-orm";
+// import type { MigrationExecutor } from "drizzle-orm/migrator";
 
-export async function up(db) {
+export async function up(db: any) {
   await db.run(sql`
     CREATE EXTENSION IF NOT EXISTS "uuid-ossp";
 
@@ -51,7 +52,7 @@ export async function up(db) {
   `);
 }
 
-export async function down(db) {
+export async function down(db: any) {
   await db.run(sql`
     DROP TABLE IF EXISTS buyer_history;
     DROP TABLE IF EXISTS buyer_tags;
