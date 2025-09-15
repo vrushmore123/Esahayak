@@ -75,7 +75,7 @@ export async function POST(request: Request) {
     for (const [index, row] of rows.entries()) {
       try {
         const validatedRow = validateAndTransformRow(row);
-        validBuyers.push({ ...validatedRow, ownerId: "clsn698kv0000008i9vj1v28k" });
+        validBuyers.push(validatedRow);
       } catch (error) {
         if (error instanceof ZodError) {
           errors.push({ row: index + 1, message: error.issues });
