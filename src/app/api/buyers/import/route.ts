@@ -2,7 +2,7 @@ import { NextResponse } from "next/server";
 import { db } from "@/lib/db";
 import { buyers } from "@/lib/schema";
 import { parse } from "csv-parse/sync";
-import { z } from "zod";
+import { z, ZodError } from "zod";
 
 // Define the validation schema for a buyer
 const buyerSchema = z.object({
@@ -17,7 +17,17 @@ const buyerSchema = z.object({
   budgetMax: z.number().optional(),
   timeline: z.enum(["0-3m", "3-6m", ">6m", "Exploring"]),
   source: z.enum(["Website", "Referral", "Walk-in", "Call", "Other"]),
-  status: z.enum(["New", "Qualified", "Contacted", "Visited", "Negotiation", "Converted", "Dropped"]).default("New"),
+  status: z
+    .enum([
+      "New",
+      "Qualified",
+      "Contacted",
+      "Visited",
+      "Negotiation",
+      "Converted",
+      "Dropped",
+    ])
+    .default("New"),
   notes: z.string().max(1000).optional(),
   tags: z.string().optional(),
 });
@@ -46,41 +56,56 @@ function validateAndTransformRow(row: any) {
 
 export async function POST(request: Request) {
   try {
-    // Parse the CSV file from the request body
     const formData = await request.formData();
     const file = formData.get("file") as File;
 
     if (!file) {
-      return NextResponse.json({ message: "No file uploaded" }, { status: 400 });
+      return NextResponse.json(
+        { message: "No file uploaded" },
+        { status: 400 }
+      );
     }
 
     const csvText = await file.text();
     const rows = parse(csvText, { columns: true, skip_empty_lines: true });
 
     const validBuyers = [];
-    const errors = [];
+    const errors: { row: number; message: any }[] = [];
 
-    // Validate and transform each row
     for (const [index, row] of rows.entries()) {
       try {
         const validatedRow = validateAndTransformRow(row);
-        validBuyers.push(validatedRow);
+        validBuyers.push({ ...validatedRow, ownerId: "clsn698kv0000008i9vj1v28k" });
       } catch (error) {
-        errors.push({ row: index + 1, message: error.errors });
+        if (error instanceof ZodError) {
+          errors.push({ row: index + 1, message: error.issues });
+        } else {
+          errors.push({
+            row: index + 1,
+            message: [{ message: "Unknown error" }],
+          });
+        }
       }
     }
 
-    // If there are validation errors, return them
     if (errors.length > 0) {
-      return NextResponse.json({ message: "Validation errors", errors }, { status: 400 });
+      return NextResponse.json(
+        { message: "Validation errors", errors },
+        { status: 400 }
+      );
     }
 
-    // Insert valid rows into the database
     await db.insert(buyers).values(validBuyers);
 
-    return NextResponse.json({ message: "Buyers imported successfully", count: validBuyers.length });
+    return NextResponse.json({
+      message: "Buyers imported successfully",
+      count: validBuyers.length,
+    });
   } catch (error) {
     console.error("Error importing buyers:", error);
-    return NextResponse.json({ message: "Failed to import buyers" }, { status: 500 });
+    return NextResponse.json(
+      { message: "Failed to import buyers" },
+      { status: 500 }
+    );
   }
 }

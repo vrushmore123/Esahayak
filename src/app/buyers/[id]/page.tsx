@@ -4,13 +4,15 @@ import BuyerHistory from "@/components/BuyerHistory";
 import Layout from "@/components/Layout";
 import AnimatedWrapper from "@/components/AnimatedWrapper";
 
+// Define the expected structure of the resolved params
+interface Props {
+  params: Promise<{ id: string }>;
+}
 
-type PageProps = {
-  params: { id: string };
-};
-export default function BuyerDetailPage({
-  params,
-}: PageProps) {
+// Make the page component async to await params
+const BuyerDetailPage = async ({ params }: Props) => {
+  const { id } = await params;
+
   return (
     <Layout>
       <AnimatedWrapper>
@@ -27,9 +29,11 @@ export default function BuyerDetailPage({
             </Link>
           </div>
         </div>
-        <BuyerForm mode="edit" buyerId={params.id} />
-        <BuyerHistory buyerId={params.id} />
+        <BuyerForm mode="edit" buyerId={id} />
+        <BuyerHistory buyerId={id} />
       </AnimatedWrapper>
     </Layout>
   );
-}
+};
+
+export default BuyerDetailPage;
